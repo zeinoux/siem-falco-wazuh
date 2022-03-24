@@ -1,0 +1,134 @@
+apiVersion: apps/v1
+kind: DaemonSet
+metadata:
+  name: wazuh-agent
+  namespace: wazuh
+spec:
+  selector:
+    matchLabels:
+      app: wazuh-agent
+  template:
+    metadata:
+      labels:
+        app: wazuh-agent
+      name: wazuh-agent
+    spec:
+      hostPID: true
+      imagePullSecrets:
+        - name: registry-secret
+      serviceAccountName: wazuh-admin
+      containers:
+      - name: wazuh-agent
+        image: <image-url>/siem-falco-wazuh:stable 
+        imagePullPolicy: Always
+        securityContext:
+          privileged: true
+        resources:
+          requests:
+            memory: 100Mi
+            cpu: 500m
+          limits:
+            memory: 512Mi
+            cpu: 500m
+        env:
+        - name: MY_NODE_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.nodeName
+        - name: MY_POD_NAME
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.name
+        - name: MY_POD_NAMESPACE
+          valueFrom:
+            fieldRef:
+              fieldPath: metadata.namespace
+        - name: MY_POD_IP
+          valueFrom:
+            fieldRef:
+              fieldPath: status.podIP
+        - name: MY_POD_SERVICE_ACCOUNT
+          valueFrom:
+            fieldRef:
+              fieldPath: spec.serviceAccountName
+        - name: wazuh_token
+          valueFrom:
+            secretKeyRef:
+              name: wazuh-admin-token-8zzhf
+              key: token
+        - name: wazuh_cert
+          valueFrom:
+            secretKeyRef:
+              name: wazuh-admin-token-8zzhf
+              key: ca.crt 
+
+        - name: wazuh_manager
+          value: "<wazuh_manager-URI>"
+        - name: SYSDIG_SKIP_LOAD
+          value: "true"
+        volumeMounts:
+        - mountPath: /var/run
+          name: var-run
+        - mountPath: /run
+          name: run
+        - mountPath: /host/dev
+          name: dev
+        - mountPath: /host/sys
+          name: sys
+          readOnly: true
+        - mountPath: /host/proc
+          name: proc
+          readOnly: true
+        - mountPath: /host/etc
+          name: etc
+          readOnly: true
+        - mountPath: /var/run/containerd/containerd.sock
+          name: docker-socket-mount
+        - mountPath: /host/var/run/containerd/containerd.sock
+          name: docker-socket-mount
+        - mountPath: /host/boot
+          name: boot
+          readOnly: true
+        - mountPath: /host/usr
+          name: usr
+          readOnly: true
+        - mountPath: /host/lib/modules
+          name: modules
+          readOnly: true
+        - mountPath: /host/var/log
+          name: log
+          readOnly: true
+      volumes:
+      - name: docker-socket-mount
+        hostPath:
+          path: /var/run/containerd/containerd.sock
+      - name: var-run
+        hostPath:
+          path: /var/run
+      - name: run
+        hostPath:
+          path: /run
+      - name: dev
+        hostPath:
+          path: /dev
+      - name: sys
+        hostPath:
+          path: /sys
+      - name: proc
+        hostPath:
+          path: /proc
+      - name: etc
+        hostPath:
+          path: /etc
+      - name: boot
+        hostPath:
+          path: /boot
+      - name: usr
+        hostPath:
+          path: /usr
+      - name: modules
+        hostPath:
+          path: /lib/modules
+      - name: log
+        hostPath:
+          path: /var/logs

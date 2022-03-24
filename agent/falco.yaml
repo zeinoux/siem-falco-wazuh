@@ -1,0 +1,30 @@
+# File containing Falco rules, loaded at startup.
+rules_file: /agent/falco_rules.yaml
+ 
+# Whether to output events in json or text
+json_output: false
+time_format_iso_8601: true
+ 
+# Send information logs to stderr and/or syslog Note these are *not* security
+# notification logs! These are just Falco lifecycle (and possibly error) logs.
+log_stderr: false
+log_syslog: true
+ 
+ 
+# Where security notifications should go.
+# Multiple outputs can be enabled.
+ 
+syslog_output:
+  enabled: true
+ 
+file_output:
+  enabled: true
+  keep_alive: false
+  filename: /var/log/falco-events.log
+ 
+stdout_output:
+  enabled: true
+ 
+program_output:
+  enabled: false
+  program: mail -s "Falco Notification" someone@example.com

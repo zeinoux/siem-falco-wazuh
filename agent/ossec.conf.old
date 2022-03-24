@@ -1,0 +1,13 @@
+<ossec_config>
+  <client>
+    <server>
+      <address>$wazuh_manager</address>
+      <port>1514</port>
+      <protocol>tcp</protocol>
+    </server>
+    <notify_time>60</notify_time>
+    <time-reconnect>120</time-reconnect>
+    <auto_restart>yes</auto_restart>
+    <crypto_method>aes</crypto_method>
+  </client>
+</ossec_config>
