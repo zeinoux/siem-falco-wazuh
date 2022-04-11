@@ -8,14 +8,21 @@
 ## Cloud Native Runtime Security.
 </div>
 
+#### Table of Contents
+
+1. [Overview](#overview)
+2. [Description - What the module does and why it is useful](#description)
+3. [File Information - include configuration and scripts](#list-important-file-information)
+4. [Installation & Setup - Configuration options and additional functionality](#installation-and-setup)
 
 
+## Overview
+Falco-Wazuh Integration service, support with k8s v1.21.*+
 
-
-#### Falco-Wazuh Integration service, support with k8s v1.21.*+
+## Description
 Basic simple integration around falco and wazuh into k8s cluster with daemonset deployment,  is adopted  from https://github.com/Stuxend/falco-wazuh projects.
 
-#### List important file information 
+## List important file information 
 - Files to deploy daemonset and service account
 ```
  k8/
@@ -70,7 +77,7 @@ agent
     
 1 directory, 28 files
 ```
-#### Installation and setup
+## Installation and setup
 
 1. Please make sure to create wazuh namespace first, and apply serviceAccount via **k8/rbac-falco-wazuh_k8s_admin.yaml**
 2. Before applying deployment file please edit this section :
