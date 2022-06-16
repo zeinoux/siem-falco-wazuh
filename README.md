@@ -2,7 +2,7 @@
 <p>
 <img src="https://raw.githubusercontent.com/falcosecurity/community/master/logo/primary-logo.png" width="150"> 
 <strong>feat</strong>
-<img src="https://raw.githubusercontent.com/wazuh/wazuh-kibana-app/master/public/assets/logo.png" width="180">
+<img src="https://github.com/wazuh/wazuh-kibana-app/raw/master/public/assets/images/logo_reports.png" width="180">
 </p>
 
 ## Cloud Native Runtime Security.
